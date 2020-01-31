@@ -44,6 +44,28 @@
         </b-col>
       </b-row>
     </b-container>
+    <hr>
+    <b-container>
+      <b-row>
+        <h1>Podaci o listama i itemima</h1>
+        <table class="table table-active">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>Broj itema</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="list in lists" :key="list.id">
+            <td>{{ list.id }} </td>
+            <td>{{ list.title }} </td>
+            <td>{{ list.itemi.length }} </td>
+          </tr>
+          </tbody>
+        </table>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
