@@ -12,19 +12,14 @@
 // DELETE item >npr http://localhost:8080/todo/itemi/1
 // DELETE item >npr http://localhost:8080/todo/liste/1
 
-
+header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
+header('Access-Control-Allow-Headers: Content-Type');
 
 
 
 require 'flight/Flight.php';
 require 'jsonindent.php';
-
-
-header("Access-Control-Allow-Origin: *");
-header('Access-Control-Allow-Methods: POST, GET, DELETE, OPTIONS,PUT');
-header('Access-Control-Allow-Headers: Content-Type');
-
-
 Flight::register('db', 'Database', array('todo'));
 $json_podaci = file_get_contents("php://input");
 Flight::set('json_podaci', $json_podaci );
@@ -32,7 +27,7 @@ Flight::set('json_podaci', $json_podaci );
 Flight::route('/', function(){
     echo 'ovde moze da ide homepage!';
 });
-
+// OVO SAM DODAO
 Flight::route('OPTIONS /itemi', function(){
 	return false;
 });
@@ -45,11 +40,10 @@ Flight::route('OPTIONS /itemi/@id', function($id){
 Flight::route('OPTIONS /liste/@id', function($id){
 	return false;
 });
-
+// Ja pojma nemam kako drugacije
 
 Flight::route('GET /itemi.json', function(){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
 	$db = Flight::db();
 	$db->select();
 	$niz=array();
@@ -66,9 +60,7 @@ Flight::route('GET /itemi.json', function(){
 });
 Flight::route('GET /itemi/@id.json', function($id){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$db->select("itemi", "*", "liste", "list_id", "id", "itemi.id = ".$id, null);
 	$red=$db->getResult()->fetch_object();
 	//JSON_UNESCAPED_UNICODE parametar je uveden u PHP verziji 5.4
@@ -81,9 +73,7 @@ Flight::route('GET /itemi/@id.json', function($id){
 });
 Flight::route('GET /liste.json', function(){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$db->select("liste", "*", null, null, null, null, null);
 	$niz=array();
 	$i=0;
@@ -108,9 +98,7 @@ Flight::route('GET /liste.json', function(){
 });
 Flight::route('GET /liste/@id.json', function($id){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$db->select("liste", "*", null, null, null, "liste.id = ".$id, null);
 	$niz=array();
 	
@@ -136,9 +124,7 @@ Flight::route('GET /liste/@id.json', function($id){
 });
 Flight::route('POST /itemi', function(){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$podaci_json = Flight::get("json_podaci");
 	$podaci = json_decode ($podaci_json);
 	if ($podaci == null){
@@ -177,9 +163,7 @@ Flight::route('POST /itemi', function(){
 
 Flight::route('POST /liste', function(){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$podaci_json = Flight::get("json_podaci");
 	$podaci = json_decode ($podaci_json);
 	if ($podaci == null){
@@ -218,9 +202,7 @@ Flight::route('POST /liste', function(){
 
 Flight::route('PUT /itemi/@id', function($id){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$podaci_json = Flight::get("json_podaci");
 	$podaci = json_decode ($podaci_json);
 	if ($podaci == null){
@@ -261,9 +243,7 @@ Flight::route('PUT /itemi/@id', function($id){
 
 Flight::route('PUT /liste/@id', function($id){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	$podaci_json = Flight::get("json_podaci");
 	$podaci = json_decode ($podaci_json);
 	if ($podaci == null){
@@ -300,9 +280,7 @@ Flight::route('PUT /liste/@id', function($id){
 });
 Flight::route('DELETE /itemi/@id', function($id){
 		header ("Content-Type: application/json; charset=utf-8");
-		header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+		$db = Flight::db();
 		if ($db->delete("itemi", array("id"),array($id))){
 				$odgovor["poruka"] = "Item je uspešno izbrisan";
 				$json_odgovor = json_encode ($odgovor,JSON_UNESCAPED_UNICODE);
@@ -321,9 +299,7 @@ Flight::route('DELETE /itemi/@id', function($id){
 
 Flight::route('DELETE /liste/@id', function($id){
 	header ("Content-Type: application/json; charset=utf-8");
-    header("Access-Control-Allow-Origin: *");
-
-    $db = Flight::db();
+	$db = Flight::db();
 	if ($db->delete("liste", array("id"),array($id))){
 			$odgovor["poruka"] = "Lista je uspešno izbrisana";
 			$json_odgovor = json_encode ($odgovor,JSON_UNESCAPED_UNICODE);
@@ -342,3 +318,4 @@ Flight::route('DELETE /liste/@id', function($id){
 
 
 Flight::start();
+?>
