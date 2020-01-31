@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import ListView from "../views/ListView";
+import AboutView from "../views/AboutView";
 
 Vue.use(VueRouter);
 
@@ -10,6 +11,10 @@ const routes = [{
   path: "/",
   name: "home",
   component: ListView
+},{
+  path: "/about",
+  name: "about",
+  component: AboutView
 }];
 
 // Instancira se VueRouter, standardan nacin za uvezivanje routera.
